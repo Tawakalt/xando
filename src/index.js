@@ -76,6 +76,7 @@ class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
+            clickedCells: [],
         };
     }
 
@@ -95,24 +96,39 @@ class Game extends React.Component {
             }]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
+            clickedCells: [...this.state.clickedCells, i]
         });
     }
 
     jumpTo(step) {
+        const newClickedCells = this.state.clickedCells.slice(0, step)
         this.setState({
             stepNumber: step,
             xIsNext: (step % 2) === 0,
+            clickedCells: newClickedCells,
         });
+    }
+
+    row(i) {
+        return Math.floor(i/3)
+    }
+
+    col(i) {
+        return i % 3
     }
 
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
+        const clickedCells = this.state.clickedCells
         
         const moves = history.map((step, move) => {
+            const cc = clickedCells[move-1] ? clickedCells[move-1] : 0
+            const location =
+            cc + '( ' + this.col(cc) + ', ' + this.row(cc)+ ' )' 
             const desc = move ?
-            'Go to move # ' + move :
+            'Go to move # ' + move + ': ' + location :
             'Go to game start';
             return(
                 <li key={move}>
