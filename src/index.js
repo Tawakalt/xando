@@ -26,6 +26,7 @@ const calculateWinner = (squares) => {
 const Square = (props) => {
     return (
         <button 
+            disabled={props.buttonDisabled}
             className="square" 
             onClick={props.onClick}
         >
@@ -38,6 +39,7 @@ class Board extends React.Component {
     renderSquare(i) {
       return (
         <Square 
+          buttonDisabled={this.props.buttonDisabled}
           value={this.props.squares[i]} 
           onClick = {() => this.props.onClick(i)}
         />
@@ -73,6 +75,8 @@ class Game extends React.Component {
             xIsNext: true,
             clickedCells: [],
             bold: null,
+            ascending: true,
+            buttonDisabled: false,
         };
     }
 
@@ -114,6 +118,14 @@ class Game extends React.Component {
         return i % 3
     }
 
+    toggle(){
+        this.state.clickedCells.reverse()
+        this.setState({
+            ascending: !this.state.ascending,
+            buttonDisabled: !this.state.buttonDisabled,
+        });
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -122,7 +134,10 @@ class Game extends React.Component {
         const bold = this.state.bold;
         
         const moves = history.map((step, move) => {
-            const cc = clickedCells[move-1] ? clickedCells[move-1] : 0
+
+            move = !this.state.ascending ? clickedCells.length - move : move
+            const pos = !this.state.ascending ? clickedCells.length - move : move-1
+            const cc = clickedCells[pos] ? clickedCells[pos] : 0
             const location =
             cc + '( ' + this.col(cc) + ', ' + this.row(cc)+ ' )' 
             const desc = move ?
@@ -130,7 +145,9 @@ class Game extends React.Component {
             'Go to game start';
             return(
                 <li key={move}>
-                    <button onClick={() =>
+                    <button 
+                    disabled={this.state.buttonDisabled}
+                    onClick={() =>
                     this.jumpTo(move)}
                     >
                         {bold === move ? <strong>{desc}</strong> : desc}
@@ -151,12 +168,18 @@ class Game extends React.Component {
             <div className="game">
             <div className="game-board">
                 <Board
+                    buttonDisabled={this.state.buttonDisabled}
                     squares={current.squares}
                     onClick={(i) => this.handleClick(i)}
                 />
             </div>
             <div className="game-info">
-                <div>{status}</div>
+                <div>
+                    {status + ' '}
+                    <button onClick={() => this.toggle()}>
+                        {this.state.ascending ? 'Asc' : 'Desc'}
+                    </button>
+                </div>
                 <ol>{moves}</ol>
             </div>
             </div>
