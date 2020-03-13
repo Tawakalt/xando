@@ -17,18 +17,22 @@ const calculateWinner = (squares) => {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b]
         && squares[a] === squares[c]) {
-            return squares[a];
+            return {'player': squares[a], 'cells': lines[i]};
         }
     }
     return null;
 }
   
 const Square = (props) => {
+    const buttonStyle = {
+        backgroundColor: "red"
+    }
     return (
         <button 
             disabled={props.buttonDisabled}
             className="square" 
             onClick={props.onClick}
+            style={(props.winnerCells && props.winnerCells.includes(props.cell)) ? buttonStyle : null}
         >
             {props.value}
         </button>
@@ -41,7 +45,9 @@ class Board extends React.Component {
         <Square 
           buttonDisabled={this.props.buttonDisabled}
           value={this.props.squares[i]} 
-          onClick = {() => this.props.onClick(i)}
+          onClick={() => this.props.onClick(i)}
+          winnerCells={this.props.winnerCells}
+          cell={i}
         />
       );
     }
@@ -158,7 +164,7 @@ class Game extends React.Component {
 
         let status;
         if (winner) {
-            status = 'Winner: ' + winner;
+            status = 'Winner: ' + winner.player;
         } else if (clickedCells.length === 9) {
             status = "It's a draw!"
         } else {
@@ -173,6 +179,7 @@ class Game extends React.Component {
                     buttonDisabled={this.state.buttonDisabled}
                     squares={current.squares}
                     onClick={(i) => this.handleClick(i)}
+                    winnerCells={winner ? winner.cells : null}
                 />
             </div>
             <div className="game-info">
