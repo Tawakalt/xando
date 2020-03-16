@@ -137,7 +137,7 @@ export default class Game extends React.Component {
             <div className="game-info">
                 <div>
                     {status + ' '}
-                    <button onClick={() => this.toggle()}>
+                    <button className="toggle" onClick={() => this.toggle()}>
                         {this.state.ascending ? 'Asc' : 'Desc'}
                     </button>
                 </div>

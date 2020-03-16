@@ -83,3 +83,20 @@ it('displays the move history correctly', () => {
     expect(history3).toEqual(
         'Go to game startGo to move # 1: 0( 0, 0 )Go to move # 2: 8( 2, 2 )');
 });
+
+it('changes the toggle text to Asc/Desc when clicked', () => {
+    const wrapper = mount(<Game />);
+    
+    const turn = wrapper.find('button.square').at(0);
+    turn.simulate('click');
+
+    const wrapper2 = wrapper.find('div.game-info').children();
+    const toggle = wrapper2.find('button.toggle');
+
+    expect(toggle.text()).toEqual('Asc');
+    toggle.simulate('click');
+    expect(toggle.text()).toEqual('Desc');
+    toggle.simulate('click');
+    expect(toggle.text()).toEqual('Asc');
+    
+});
