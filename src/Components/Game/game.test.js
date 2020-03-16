@@ -98,5 +98,26 @@ it('changes the toggle text to Asc/Desc when clicked', () => {
     expect(toggle.text()).toEqual('Desc');
     toggle.simulate('click');
     expect(toggle.text()).toEqual('Asc');
+});
+
+it('sorts moves history in ascending/descending order when button toggled', () => {
+    const wrapper = mount(<Game />);
     
+    const turn = wrapper.find('button.square').at(0);
+    turn.simulate('click');
+    let history = 
+        wrapper.find('div.game-info').children().last().text();
+    expect(history).toEqual('Go to game startGo to move # 1: 0( 0, 0 )');
+
+    const wrapper2 = wrapper.find('div.game-info').children();
+    const toggle = wrapper2.find('button.toggle');
+    toggle.simulate('click');
+    const revHistory = 
+        wrapper.find('div.game-info').children().last().text();
+    expect(revHistory).toEqual('Go to move # 1: 0( 0, 0 )Go to game start');
+
+    toggle.simulate('click');
+    history = 
+        wrapper.find('div.game-info').children().last().text();
+    expect(history).toEqual('Go to game startGo to move # 1: 0( 0, 0 )');
 });
