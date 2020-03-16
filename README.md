@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.com/Tawakalt/xando.svg?branch=master)](https://travis-ci.com/Tawakalt/xando)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ea753dcfbb204096d09c/test_coverage)](https://codeclimate.com/github/Tawakalt/xando/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ea753dcfbb204096d09c/maintainability)](https://codeclimate.com/github/Tawakalt/xando/maintainability)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
