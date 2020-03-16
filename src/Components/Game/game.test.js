@@ -148,3 +148,22 @@ it('does nothing when there\'s a winner already', () => {
     // history is not updated with the new clicked cell
     expect(history).toEqual(historyText); 
 });
+
+it('reverses up to move when move clicked', () => {
+    jest.spyOn(Game.prototype, 'jumpTo');
+    const wrapper = mount(<Game />);
+    
+    const turn = wrapper.find('button.square').at(0);
+    turn.simulate('click');
+    const turn1 = wrapper.find('button.square').at(1);
+    turn1.simulate('click');
+    const turn2 = wrapper.find('button.square').at(2)
+    turn2.simulate('click');
+
+    const wrapper2 = wrapper.find('div.game-info').children();
+    const moves = wrapper2.find('ol').children().first();
+    const first = moves.find('button.jumpTo')
+    first.simulate('click');
+    expect(Game.prototype.jumpTo).toHaveBeenCalled();
+    Game.prototype.jumpTo.mockRestore();
+});

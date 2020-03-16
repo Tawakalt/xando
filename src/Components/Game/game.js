@@ -104,6 +104,7 @@ export default class Game extends React.Component {
             return(
                 <li key={move}>
                     <button 
+                    className="jumpTo"
                     disabled={this.state.buttonDisabled}
                     onClick={() =>
                     this.jumpTo(move)}
