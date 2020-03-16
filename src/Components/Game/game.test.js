@@ -63,3 +63,23 @@ it('determines a draw correctly', () => {
         wrapper.find('div.game-info').children().first().text();
     expect(winner).toEqual('It\'s a draw! Asc')
 });
+
+it('displays the move history correctly', () => {
+    const wrapper = mount(<Game />);
+    const history1 = 
+        wrapper.find('div.game-info').children().last().text();
+    expect(history1).toEqual('Go to game start');
+    
+    const turn1 = wrapper.find('button.square').at(0);
+    turn1.simulate('click');
+    const history2 = 
+        wrapper.find('div.game-info').children().last().text();
+    expect(history2).toEqual('Go to game startGo to move # 1: 0( 0, 0 )');
+
+    const turn2 = wrapper.find('button.square').at(8)
+    turn2.simulate('click');
+    const history3 = 
+        wrapper.find('div.game-info').children().last().text();
+    expect(history3).toEqual(
+        'Go to game startGo to move # 1: 0( 0, 0 )Go to move # 2: 8( 2, 2 )');
+});
