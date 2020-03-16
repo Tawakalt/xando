@@ -121,3 +121,30 @@ it('sorts moves history in ascending/descending order when button toggled', () =
         wrapper.find('div.game-info').children().last().text();
     expect(history).toEqual('Go to game startGo to move # 1: 0( 0, 0 )');
 });
+
+it('does nothing when there\'s a winner already', () => {
+    const wrapper = mount(<Game />);
+    const turn1 = wrapper.find('button.square').at(0);
+    turn1.simulate('click');
+    const turn2 = wrapper.find('button.square').at(1)
+    turn2.simulate('click');
+    const turn3 = wrapper.find('button.square').at(4)
+    turn3.simulate('click');
+    const turn4 = wrapper.find('button.square').at(5)
+    turn4.simulate('click');
+    const turn5 = wrapper.find('button.square').at(8)
+    turn5.simulate('click');
+
+    // X has won the game
+    const historyText = 
+    "Go to game startGo to move # 1: 0( 0, 0 )Go to move # 2: 1( 1, 0 )" + 
+    "Go to move # 3: 4( 1, 1 )Go to move # 4: 5( 2, 1 )Go to move # 5: 8( 2, 2 )"
+    const history = 
+        wrapper.find('div.game-info').children().last().text();
+    expect(history).toEqual(historyText);
+
+    const turn6 = wrapper.find('button.square').at(7)
+    turn6.simulate('click');
+    // history is not updated with the new clicked cell
+    expect(history).toEqual(historyText); 
+});
